@@ -1,6 +1,6 @@
-import create, { StoreApi } from 'zustand'
-// import connectToReduxDevtools from './redux-devtools-connection';
-import { GenericStoreState, storeNameKey } from './types';
+import create from 'zustand'
+import { connectToDevtools } from './utils/connect-to-devtools';
+import { GenericStoreState, storeKey } from './utils/types';
 
 export interface CatsState extends GenericStoreState {
   cats: number;
@@ -11,7 +11,7 @@ export interface CatsState extends GenericStoreState {
 }
 
 export const useCatStore = create<CatsState>()((set) => ({
-  [storeNameKey]: 'cats',
+  [storeKey]: 'app/cats',
   cats: 0,
   increasePopulation: () => set((state) => ({ cats: state.cats + 1 })),
   removeCat: () => set((state) => ({ cats: state.cats - 1})),
@@ -19,12 +19,4 @@ export const useCatStore = create<CatsState>()((set) => ({
   setSpecificCatsAmount: (amount: number) => set({ cats: amount }),
 }));
 
-console.log('process.env.NODE_ENV', process.env.NODE_ENV);
-console.log('process.env.BUILD_ENV', process.env.BUILD_ENV);
-console.log('process.env.REACT_APP_CUSTOM_NODE_ENV', process.env.REACT_APP_CUSTOM_NODE_ENV);
-
-if (process.env.REACT_APP_CUSTOM_NODE_ENV !== 'production') {
-  const connectToReduxDevtools: (s: StoreApi<GenericStoreState>) => void = require('./redux-devtools-connection').default;
-  // console.log('connectToReduxDevtools', connectToReduxDevtools);
-  connectToReduxDevtools(useCatStore);
-}
+connectToDevtools(useCatStore);

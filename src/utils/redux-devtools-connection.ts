@@ -1,5 +1,5 @@
 import { StoreApi } from "zustand";
-import { GenericStoreState, storeNameKey } from "./types";
+import { GenericStoreState, storeKey } from "./types";
 import keyBy from 'lodash/keyBy';
 import isEqual from "lodash/isEqual";
 import { Dictionary } from "lodash";
@@ -31,23 +31,23 @@ if (process.env.REACT_APP_CUSTOM_NODE_ENV !== 'production') {
 const storeInits: GenericStoreState[] = [];
 const stores: StoreApi<GenericStoreState>[] = [];
 
-const connectToReduxDevtools = (store: StoreApi<GenericStoreState>) => {
-    const alias = store.getState()[storeNameKey];
+const connectStoreToReduxDevtools = (store: StoreApi<GenericStoreState>) => {
+    const storeNameKeyAlias = store.getState()[storeKey];
     stores.push(store);
     storeInits.push(store.getState());
-    const inits = keyBy(storeInits, storeNameKey);
+    const inits = keyBy(storeInits, storeKey);
     connection?.init(inits);
   
     let isUpdateFromDevtools = false;
     connection?.subscribe((evt) => {
       if (evt.type === "DISPATCH") {
         if (evt.state === undefined) {
-          store.setState(inits[alias]);
+          return;
         }
         const newState = JSON.parse(evt.state);
         isUpdateFromDevtools = true;
-        if (!isEqual(store.getState(), newState[alias])) {
-          store.setState(newState[alias]);
+        if (!isEqual(store.getState(), newState[storeNameKeyAlias])) {
+          store.setState(newState[storeNameKeyAlias]);
         }
         isUpdateFromDevtools = false;
       }
@@ -55,11 +55,14 @@ const connectToReduxDevtools = (store: StoreApi<GenericStoreState>) => {
   
     store.subscribe((newState) => {
       const storesStates = stores.map((store) => store.getState());
-      const currentStates = keyBy(storesStates, storeNameKey);
+      const currentStates = keyBy(storesStates, storeKey);
       if (!isUpdateFromDevtools) {
-        connection?.send(alias, {...currentStates, [alias]: newState});
+        connection?.send(storeNameKeyAlias, {
+          ...currentStates,
+          [storeNameKeyAlias]: newState
+        });
       }
     });
   }
 
-export default connectToReduxDevtools;
+export default connectStoreToReduxDevtools;

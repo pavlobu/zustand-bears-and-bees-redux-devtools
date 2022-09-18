@@ -74,6 +74,7 @@ function App() {
       </div>
       <br />
       <Bears />
+      <br />
       <ShowCats />
       <div className="actions">
         {useCatStore((state) => state.cats) !== 0 ? <RemoveCat /> : null}
