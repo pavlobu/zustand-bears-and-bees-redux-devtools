@@ -28,7 +28,7 @@ export const useBeesStore = create<BeesState>()(devtools((set) => ({
   }), false, { type: devOnly('removeAllBees') }),
   setSpecificBeesAmount: (amount: number) => set(() => ({
     bees: amount,
-  }), false, { type: devOnly('setSpecificBeesAmount') }),
+  }), false, { type: devOnly('setSpecificBeesAmount'), storeName: devOnly(storeName) }),
 }), { name: window.title, storeName: devOnly(storeName) }));
 
 // connectToDevtools(useBeesStore);
