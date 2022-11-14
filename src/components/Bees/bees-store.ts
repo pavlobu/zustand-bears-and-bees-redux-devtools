@@ -1,6 +1,4 @@
-import {
-  devOnlyDevtools,
-} from 'zustand/middleware';
+import { devOnlyDevtools as devtools } from 'zustand/middleware';
 import { reactDevtoolsConnectionName } from '../../utils/redux-devtools/constants';
 import create from 'zustand';
 
@@ -14,7 +12,7 @@ export interface BeesState {
 
 const store = 'app/bees';
 
-export const useBeesStore = create<BeesState>()(devOnlyDevtools((set) => ({
+export const useBeesStore = create<BeesState>()(devtools((set) => ({
   bees: 0,
   increasePopulation: () => set((state) => ({
     bees: state.bees + 1,

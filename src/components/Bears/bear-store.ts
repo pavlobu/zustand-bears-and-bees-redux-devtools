@@ -1,5 +1,5 @@
 import {
-  devOnlyDevtools,
+  devOnlyDevtools as devtools,
 } from 'zustand/middleware';
 import { reactDevtoolsConnectionName } from '../../utils/redux-devtools/constants';
 import create from 'zustand';
@@ -14,7 +14,7 @@ export interface BearsState {
 
 const store = 'app/bears';
 
-export const useBearsStore = create<BearsState>()(devOnlyDevtools<BearsState>((set) => ({
+export const useBearsStore = create<BearsState>()(devtools((set) => ({
   bears: 0,
   increasePopulation: () => set((state) => ({
     bears: state.bears + 1,
