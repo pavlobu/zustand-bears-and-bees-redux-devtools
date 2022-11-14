@@ -15,32 +15,36 @@ import {
 import { Bears } from './components/Bears';
 import { Bees } from './components/Bees';
 import { useBearsStore } from './components/Bears/bear-store';
-import { useBeesStore } from './components/Bees/bees-store';
 import React from 'react';
 
-const App = () => (
-  <div className="App">
-    <ShowBears />
-    <div className="actions">
-      {useBearsStore((state) => state.bears) !== 0 ? <RemoveBear /> : null}
-      <AddBear />
-      {useBearsStore((state) => state.bears) !== 0 ? <NukeBears /> : null}
-      <SpecificBearsAmount />
+const App = () => {
+  const isZeroBears = useBearsStore((state) => state.bears) === 0;
+  const isZeroBees = useBearsStore((state) => state.bears) === 0;
+
+  return (
+    <div className="App">
+      <ShowBears />
+      <div className="actions">
+        {isZeroBears ? null : <RemoveBear />}
+        <AddBear />
+        {isZeroBears ? null : <NukeBears />}
+        <SpecificBearsAmount />
+      </div>
+      <br />
+      <Bears />
+      <br />
+      <ShowBees />
+      <div className="actions">
+        {isZeroBees ? null : <RemoveBee />}
+        <AddBee />
+        {isZeroBees ? null : <NukeBees />}
+        <SpecificBeesAmount />
+      </div>
+      <br />
+      <Bees />
     </div>
-    <br />
-    <Bears />
-    <br />
-    <ShowBees />
-    <div className="actions">
-      {useBeesStore((state) => state.bees) !== 0 ? <RemoveBee /> : null}
-      <AddBee />
-      {useBeesStore((state) => state.bees) !== 0 ? <NukeBees /> : null}
-      <SpecificBeesAmount />
-    </div>
-    <br />
-    <Bees />
-  </div>
-);
+  );
+};
 
 // eslint-disable-next-line import/no-default-export
 export default App;

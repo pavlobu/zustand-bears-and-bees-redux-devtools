@@ -15,12 +15,12 @@ export const ShowBears: FC = () => {
 };
 
 export const ShowBees: FC = () => {
-  const cats = useBeesStore((state) => state.bees);
+  const bees = useBeesStore((state) => state.bees);
   return (
     <p>
-      {cats}
+      {bees}
       {' '}
-      cats in the forest
+      bees in the forest
     </p>
   );
 };
@@ -58,11 +58,11 @@ export const RemoveBee: FC = () => {
 };
 
 export const NukeBees: FC = () => {
-  const removeAllCats = useBeesStore((state) => state.removeAllBees);
-  return <button type="button" onClick={() => removeAllCats()}>Nuke all bees</button>;
+  const removeAllBees = useBeesStore((state) => state.removeAllBees);
+  return <button type="button" onClick={() => removeAllBees()}>Nuke all bees</button>;
 };
 
 export const SpecificBeesAmount: FC = () => {
-  const specificCatsAmount = useBeesStore((state) => state.setSpecificBeesAmount);
-  return <button type="button" onClick={() => specificCatsAmount(25)}>Set 25 bees</button>;
+  const specificBeesAmount = useBeesStore((state) => state.setSpecificBeesAmount);
+  return <button type="button" onClick={() => specificBeesAmount(25)}>Set 25 bees</button>;
 };

@@ -1,10 +1,10 @@
-import { GenericStoreState } from '../../utils/redux-devtools/types';
-import { devOnly } from '../../utils/redux-devtools/dev-only';
-import { devtools } from 'zustand/middleware';
-import { storeKey } from '../../utils/redux-devtools/constants';
+import {
+  devOnlyDevtools,
+} from 'zustand/middleware';
+import { reactDevtoolsConnectionName } from '../../utils/redux-devtools/constants';
 import create from 'zustand';
 
-export interface BearsState extends GenericStoreState {
+export interface BearsState {
   bears: number;
   increasePopulation: () => void;
   removeBear: () => void;
@@ -12,23 +12,20 @@ export interface BearsState extends GenericStoreState {
   setSpecificBearsAmount: (n: number) => void;
 }
 
-const storeName = 'app/bears';
+const store = 'app/bears';
 
-export const useBearsStore = create<BearsState>()(devtools((set) => ({
-  // [storeKey]: devOnly(storeName),
+export const useBearsStore = create<BearsState>()(devOnlyDevtools<BearsState>((set) => ({
   bears: 0,
   increasePopulation: () => set((state) => ({
     bears: state.bears + 1,
-  }), false, { type: devOnly('increasePopulation') }),
+  }), false, { type: 'increasePopulation' }),
   removeBear: () => set((state) => ({
     bears: state.bears - 1,
-  }), false, { type: devOnly('removeBear') }),
+  }), false, { type: 'removeBear' }),
   removeAllBears: () => set(() => ({
     bears: 0,
-  }), false, { type: devOnly('removeAllBears') }),
+  }), false, { type: 'removeAllBears' }),
   setSpecificBearsAmount: (amount: number) => set(() => ({
     bears: amount,
-  }), false, { type: devOnly('setSpecificBearsAmount') }),
-}), { name: window.title, storeName: devOnly(storeName) }));
-
-// connectToDevtools(useBearsStore);
+  }), false, { type: 'setSpecificBearsAmount' }),
+}), { name: reactDevtoolsConnectionName, store }));
