@@ -1,4 +1,4 @@
-import { devOnlyDevtools as devtools } from 'zustand/middleware';
+import { devOnlyDevtools as devtools } from '@pavlobu/zustand-middleware';
 import { reactDevtoolsConnectionName } from '../../utils/redux-devtools/constants';
 import create from 'zustand';
 
